@@ -1,6 +1,12 @@
-﻿#include"MyLib.h"
-#include<iostream>
+﻿#include"MyLib.hpp"
+#include"MineLib.hpp"
+#include<fstream>
+#include<iomanip>
+using namespace std;
+
 int main()
 {
-	std::cout << sum(1, 1);
+	ifstream in("input.txt");
+	ofstream out("output.txt");
+
 }

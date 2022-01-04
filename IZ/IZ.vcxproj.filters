@@ -13,9 +13,15 @@
     <ClCompile Include="MyLib.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="MineLib.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MyLib.h">
+    <ClInclude Include="MyLib.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="MineLib.hpp">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
