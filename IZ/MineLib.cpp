@@ -1,21 +1,16 @@
 #include"MineLib.hpp"
 #include "MyLib.hpp"
-
-int dtoi(string d)
+#include<cstring>
+#include<cstdlib>
+int dtoi(char d[])
 {
-	d.append(d, 0, 2);
-	d.erase(0, 3);
-	return stoi(d);
+	char i[] = { d[3], d[4], d[5], d[6], d[0], d[1], '\0' };
+	return atoi(i);
 }
 
-string itod(int i)
+char* itod(int i)
 {
-	string d = to_string(i);
-	d.insert(2, ".");
+	char* tmp = itoa(i, tmp, 10),
+	d[] = { tmp[4], tmp[5], '.', tmp[0], tmp[1], tmp[2], tmp[3], '\0'};
 	return d;
-}
-
-int Vodn(_flats flats, int N_flat, _report odpu)
-{
-	
 }

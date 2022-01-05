@@ -1,7 +1,6 @@
 #include"MyLib.hpp"
 #include"MineLib.hpp"
 #include<fstream>
-#include<cstring>
 
 _s gettaxes()
 {
@@ -17,17 +16,17 @@ _s gettaxes()
 	return { taxes, N_Taxes };
 }
 
-_s gethome()
+_flat* gethome()
 {
 	ifstream inhome("home.txt");
 	int N;
 	double S_home;
 	inhome >> N >> S_home;
-	_flat* flats = new _flat[N];
+	_flat* flats = new _flat[N + 1];
 	for (int i = 1; i <= N; i++)
 	{
 		inhome >> flats[i].s >> flats[i].ppl;
 	}
 	inhome.close();
-	return { flats, N };
+	return flats;
 }

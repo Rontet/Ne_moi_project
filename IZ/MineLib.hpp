@@ -1,6 +1,6 @@
 #pragma once
 using namespace std;
 
-int dtoi(string d);
+int dtoi(char d[]);
 
-string itod(int i);
+char* itod(int i);

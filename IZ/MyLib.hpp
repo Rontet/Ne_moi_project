@@ -8,18 +8,20 @@ struct _tax
 		k;
 };
 
+struct _s
+{
+	_tax* mas;
+	int n;
+};
+
 struct _flat
 {
+	int** ipu;
 	double s;
 	int ppl;
 };
 
-struct _s
-{
-	void* s;
-	int n;
-};
 
 _s gettaxes();
 
-_s gethome();
+_flat* gethome();
