@@ -1,4 +1,5 @@
 #pragma once
+#include"MineLib.hpp"
 using namespace std;
 
 struct _tax
@@ -8,20 +9,15 @@ struct _tax
 		k;
 };
 
-struct _s
-{
-	_tax* mas;
-	int n;
-};
-
 struct _flat
 {
-	int** ipu;
+	int **ipu,
+		**MonExp,
+		**MonOdn;
 	double s;
 	int ppl;
 };
 
-
 _s gettaxes();
 
-_flat* gethome();
+_s gethome();

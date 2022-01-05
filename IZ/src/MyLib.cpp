@@ -16,7 +16,7 @@ _s gettaxes()
 	return { taxes, N_Taxes };
 }
 
-_flat* gethome()
+_s gethome()
 {
 	ifstream inhome("home.txt");
 	int N;
@@ -28,5 +28,5 @@ _flat* gethome()
 		inhome >> flats[i].s >> flats[i].ppl;
 	}
 	inhome.close();
-	return flats;
+	return { flats, N };
 }
