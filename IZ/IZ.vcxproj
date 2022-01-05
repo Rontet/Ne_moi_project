@@ -143,13 +143,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="IZ.cpp" />
-    <ClCompile Include="MineLib.cpp" />
-    <ClCompile Include="MyLib.cpp" />
+    <ClCompile Include="src\IZ.cpp" />
+    <ClCompile Include="src\MineLib.cpp" />
+    <ClCompile Include="src\MyLib.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MineLib.hpp" />
-    <ClInclude Include="MyLib.hpp" />
+    <ClInclude Include="src\MineLib.hpp" />
+    <ClInclude Include="src\MyLib.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
