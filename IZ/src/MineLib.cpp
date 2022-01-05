@@ -10,7 +10,8 @@ int dtoi(char d[])
 
 char* itod(int i)
 {
-	char* tmp = itoa(i, tmp, 10),
-	d[] = { tmp[4], tmp[5], '.', tmp[0], tmp[1], tmp[2], tmp[3], '\0'};
+	char tmp[10];
+	itoa(i, tmp, 10);
+	char* d = new char[]{ tmp[4], tmp[5], '.', tmp[0], tmp[1], tmp[2], tmp[3], '\0'};
 	return d;
 }
