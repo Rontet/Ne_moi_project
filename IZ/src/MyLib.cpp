@@ -10,7 +10,7 @@ _s gettaxes()
 	_tax* taxes = new _tax[N_Taxes];
 	for (int i = 0; i < N_Taxes; i++)
 	{
-		intax >> taxes[i].name >> taxes[i].price >> taxes[i].k;
+		intax >> taxes[i].name >> taxes[i].cost >> taxes[i].k;
 	}
 	intax.close();
 	return { taxes, N_Taxes };
@@ -26,6 +26,7 @@ _s gethome()
 	for (int i = 1; i <= N; i++)
 	{
 		inhome >> flats[i].s >> flats[i].ppl;
+		flats[i].s /= S_home;
 	}
 	inhome.close();
 	return { flats, N };

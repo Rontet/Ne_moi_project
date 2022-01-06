@@ -1,4 +1,5 @@
 #pragma once
+#define MMoYYYY 8
 using namespace std;
 
 struct _s

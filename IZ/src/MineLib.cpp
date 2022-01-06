@@ -1,7 +1,7 @@
 #include"MineLib.hpp"
 #include "MyLib.hpp"
-#include<cstring>
 #include<cstdlib>
+
 int dtoi(char d[])
 {
 	char i[] = { d[3], d[4], d[5], d[6], d[0], d[1], '\0' };
@@ -10,7 +10,8 @@ int dtoi(char d[])
 
 char* itod(int i)
 {
-	char* tmp = itoa(i, tmp, 10),
-	d[] = { tmp[4], tmp[5], '.', tmp[0], tmp[1], tmp[2], tmp[3], '\0'};
+	char tmp[MMoYYYY] = { '\0' };
+	itoa(i, tmp, 10);
+	char* d = new char[] { tmp[4], tmp[5], '.', tmp[0], tmp[1], tmp[2], tmp[3], '\0'};
 	return d;
 }

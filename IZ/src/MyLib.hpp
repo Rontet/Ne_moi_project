@@ -5,15 +5,14 @@ using namespace std;
 struct _tax
 {
 	char name[6];
-	int price,
+	int cost,
 		k;
 };
 
 struct _flat
 {
 	int **ipu,
-		**MonExp,
-		**MonOdn;
+		**MonExp;
 	double s;
 	int ppl;
 };

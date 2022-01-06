@@ -1,9 +1,7 @@
-﻿#define ZERO_MONTH 202109
-#include"MyLib.hpp"
+﻿#include"MyLib.hpp"
 #include"MineLib.hpp"
 #include<fstream>
-#include<cstdio>
-#include<iomanip>
+#include<cstring>
 using namespace std;
 
 int main()
@@ -11,25 +9,19 @@ int main()
 	//объявления, ввод, динамическая обработка---------------
 	_s flats = gethome();
 	_s taxes = gettaxes();
-	flats.mas = (_flat*)flats.mas;
-	taxes.mas = (_tax*)taxes.mas;
 	ifstream indet("details.txt");
 	int L;
 	indet >> L;
-	double live_s = 0.0;
-	for (int i = 0; i < flats.n; i++)
+	for (int i = 1; i < flats.n; i++)
 	{
-		live_s += flats.mas[i].s;
-		flats.mas[i].ipu = new int*[L];
-		flats.mas[i].MonExp = new int*[L];
-		flats.mas[i].MonOdn = new int*[L];
+		_flat& flat = (static_cast<_flat*>(flats.mas))[i];
+		flat.ipu = new int*[L];
+		flat.MonExp = new int*[L];
 		for (int j = 0; j < L; j++)
 		{
-			flats.mas[i].ipu[j] = new int[taxes.n];
-			flats.mas[i].MonExp[j] = new int[taxes.n];
-			flats.mas[i].MonOdn[j] = new int[taxes.n];
+			flat.ipu[j] = new int[taxes.n];
+			flat.MonExp[j] = new int[taxes.n];
 		}
-
 	}
 	int **odpu = new int*[L],
 		**ExpFlats = new int*[L];
@@ -38,15 +30,31 @@ int main()
 		odpu[i] = new int[taxes.n];
 		ExpFlats[i] = new int[taxes.n];
 	}
+	int *Monpool = new int[L],
+		*tmps = new int[taxes.n],
+		MIN_MONTH = 999999;
+	for (int i = 0; i < L; i++)
+	{
+		indet >> Monpool[i];
+		for (int j = 0; j < taxes.n; j++)
+		{
+			indet >> tmps[j];
+		}
+		if (Monpool[i] < MIN_MONTH) MIN_MONTH = Monpool[i];
+	}
+	delete[] Monpool;
+	delete[] tmps;
+	indet.seekg(0);
+	indet >> L;
 	int date;
-	char dat[8];
+	char dat[MMoYYYY];
 	for (int i = 0; i < L; i++)
 	{
 		indet >> dat;
 		date = dtoi(dat);
 		for (int j = 0; j < taxes.n; j++)
 		{
-			indet >> odpu[date - ZERO_MONTH][j];
+			indet >> odpu[date - MIN_MONTH][j];
 			ExpFlats[i][j] = 0;
 		}
 	}
@@ -58,83 +66,90 @@ int main()
 		date = dtoi(dat);
 		for (int j = 0; j < taxes.n; j++)
 		{
-			indet >> flats.mas[flatnum].ipu[date - ZERO_MONTH][j];
-			flats.mas[flatnum].MonExp[date - ZERO_MONTH][j] =
-			(date - ZERO_MONTH == 0) ? 0 :
-			flats.mas[flatnum].ipu[date - ZERO_MONTH][j] - 
-			flats.mas[flatnum].ipu[date - ZERO_MONTH - 1][j]
-				;
-			ExpFlats[date - ZERO_MONTH][j] +=
-				flats.mas[flatnum].MonExp[date - ZERO_MONTH][j];
+			_flat& flat = (static_cast<_flat*>(flats.mas))[flatnum];
+			auto dszm = date - MIN_MONTH;
+			indet >> flat.ipu[dszm][j];
+			flat.MonExp[dszm][j] = (dszm == 0) ? 
+				0 : flat.ipu[dszm][j] - flat.ipu[dszm - 1][j];
+			ExpFlats[dszm][j] += flat.MonExp[dszm][j];
 		}
 	}
 	indet.close();
-	freopen("input.txt", "r", stdin);
+	ifstream fin("input.txt");
 	int N_flat;
 	char taxname[6],
-		 period_L[8],
-		 period_R[8];
-	scanf_s("%d %s %s-%s", &N_flat, taxname, period_L, period_R);
-	fclose(stdin);
+		period_L[MMoYYYY],
+		period_R[MMoYYYY];
+	char c;
+	fin >> N_flat >> taxname >> period_L >> period_R;
+	fin.close();
 	//обработка и вывод---------------------------------------
-	int per_L = dtoi(period_L) - ZERO_MONTH,
-		per_R = dtoi(period_R) - ZERO_MONTH,
-		N_tax = -1,
-		f = 1;
-	flats.mas[N_flat].s /= live_s;
-	do
+	int per_L = dtoi(period_L) - MIN_MONTH,
+		per_R = dtoi(period_R) - MIN_MONTH,
+		N_tax = 0;
+	#define taxcast _tax& tax = static_cast<_tax*>(taxes.mas)[N_tax]
+	taxcast;
+	while (strcmp(tax.name, taxname))
 	{
 		N_tax++;
-		if (strcmp(taxes.mas[N_tax].name, taxname) == 0)
-		{
-			f = 0;
-		}
-	} while (N_tax < taxes.n && f);
-	ofstream out("output.txt");
+		taxcast;
+	}
+	#undef taxcast
+	ofstream fout("output.txt");
 	int SumExpFlat = 0,
 		SumExpOdn = 0,
-		Cost = taxes.mas[N_tax].pay;
-	out << per_R - per_L + 1 << '\n';
+		Cost = static_cast<_tax*>(taxes.mas)[N_tax].cost;
+	/*vvvvvvvvvv поправить vvvvvvvvv*/
 	for (int i = per_L; i <= per_R; i++)
 	{
-		int ExpFlat = flats.mas[N_flat].MonExp[i][N_tax],
-			ExpOdn = (odpu[i][N_tax] - ExpFlats[i][N_tax]) *
-					  flats.mas[N_flat].s
-			;
+		auto& flat = static_cast<_flat*>(flats.mas)[N_flat];
+		int ExpFlat = flat.MonExp[i][N_tax],
+			ExpOdn = (odpu[i][N_tax] - ExpFlats[i][N_tax]) * flat.s;
 		SumExpFlat += ExpFlat;
 		SumExpOdn += ExpOdn;
-		out << itod(i + ZERO_MONTH) << ' '
-			<< ExpFlat * Cost << ' ' << ExpOdn * Cost << '\n';
+		
 	}
-	out.seekp(0);
 	int SumCostFlat = SumExpFlat * Cost,
 		SumCostOdn = SumExpOdn * Cost;
-	out << SumExpFlat << ' '
+	fout << SumExpFlat << ' '
 		<< SumCostFlat << ' '
 		<< SumExpOdn << ' '
-		<< SumCostOdn << '\n';
-	out.close();
+		<< SumCostOdn << '\n'
+		<< per_R - per_L + 1 << '\n';
+	for (int i = per_L; i <= per_R; i++)
+	{
+		auto& flat = static_cast<_flat*>(flats.mas)[N_flat];
+		char* MonthYear = itod(i + MIN_MONTH);
+		fout << MonthYear << ' '
+			<< flat.MonExp[i][N_tax] << ' '
+			<< flat.MonExp[i][N_tax] * Cost << ' '
+			<< (odpu[i][N_tax] - ExpFlats[i][N_tax]) * flat.s << ' '
+			<< (odpu[i][N_tax] - ExpFlats[i][N_tax]) * flat.s * Cost << '\n';
+		delete[] MonthYear;
+	}
+	/*^^^^^^^^^^^ поправить ^^^^^^^^^^^*/
+	fout.close();
 	//очистка-----------------------------------------------------
 	for (int i = 0; i < L; i++)
 	{
-		delete[]odpu[i];
-		delete[]ExpFlats[i];
+		delete[] odpu[i];
+		delete[] ExpFlats[i];
 	}
-	for (int i = 0; i < flats.n; i++)
+	for (int i = 1; i < flats.n; i++)
 	{
+		auto& flat = static_cast<_flat*>(flats.mas)[i];
 		for (int j = 0; j < L; j++)
 		{
-			delete[]flats.mas[i].ipu[j];
-			delete[]flats.mas[i].MonExp[j];
-			delete[]flats.mas[i].MonOdn[j];
+
+			delete[] flat.ipu[j];
+			delete[] flat.MonExp[j];
 		}
-		delete[]flats.mas[i].ipu;
-		delete[]flats.mas[i].MonExp;
-		delete[]flats.mas[i].MonOdn;
+		delete[] flat.ipu;
+		delete[] flat.MonExp;
 	}
-	delete[]odpu;
-	delete[]ExpFlats;
-	delete[]flats.mas;
-	delete[]taxes.mas;
+	delete[] odpu;
+	delete[] ExpFlats;
+	delete[] flats.mas;
+	delete[] taxes.mas;
 	return 0;
 }
