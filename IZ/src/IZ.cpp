@@ -23,24 +23,29 @@ int main()
 			flat.MonExp[j] = new int[taxes.n];
 		}
 	}
-	int** odpu = new int* [L],
-		** ExpFlats = new int* [L];
+	int **odpu = new int* [L],
+		**ExpFlats = new int* [L];
 	for (int i = 0; i < L; i++)
 	{
 		odpu[i] = new int[taxes.n];
 		ExpFlats[i] = new int[taxes.n];
 	}
-	int* Monpool = new int[L],
-		* tmps = new int[taxes.n],
+	int *Monpool = new int[L],
+		*tmps = new int[taxes.n],
 		MIN_MONTH = 999999;
 	for (int i = 0; i < L; i++)
 	{
-		indet >> Monpool[i];
+		char dat[MMoYYYY];
+		indet >> dat;
+		Monpool[i] = dtoi(dat);
 		for (int j = 0; j < taxes.n; j++)
 		{
 			indet >> tmps[j];
 		}
-		if (Monpool[i] < MIN_MONTH) MIN_MONTH = Monpool[i];
+		if (Monpool[i] < MIN_MONTH)
+		{
+			MIN_MONTH = Monpool[i];
+		}
 	}
 	delete[] Monpool;
 	delete[] tmps;
@@ -104,7 +109,7 @@ int main()
 	{
 		auto& flat = static_cast<_flat*>(flats.mas)[N_flat];
 		int ExpFlat = flat.MonExp[i][N_tax],
-			ExpOdn = (odpu[i][N_tax] - ExpFlats[i][N_tax]) * flat.s;
+			ExpOdn = static_cast<int>((odpu[i][N_tax] - ExpFlats[i][N_tax]) * flat.s);
 		SumExpFlat += ExpFlat;
 		SumExpOdn += ExpOdn;
 
@@ -123,8 +128,8 @@ int main()
 		fout << MonthYear << ' '
 			<< flat.MonExp[i][N_tax] << ' '
 			<< flat.MonExp[i][N_tax] * Cost << ' '
-			<< (odpu[i][N_tax] - ExpFlats[i][N_tax]) * flat.s << ' '
-			<< (odpu[i][N_tax] - ExpFlats[i][N_tax]) * flat.s * Cost << '\n';
+			<< static_cast<int>((odpu[i][N_tax] - ExpFlats[i][N_tax]) * flat.s) << ' '
+			<< static_cast<int>((odpu[i][N_tax] - ExpFlats[i][N_tax]) * Cost * flat.s) << '\n';
 		delete[] MonthYear;
 	}
 	/*^^^^^^^^^^^ поправить ^^^^^^^^^^^*/
