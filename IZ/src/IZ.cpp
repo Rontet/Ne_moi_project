@@ -87,14 +87,14 @@ int main()
 	int per_L = dtoi(period_L) - MIN_MONTH,
 		per_R = dtoi(period_R) - MIN_MONTH,
 		N_tax = 0;
-#define taxcast _tax& tax = static_cast<_tax*>(taxes.mas)[N_tax]
+	#define taxcast _tax& tax = static_cast<_tax*>(taxes.mas)[N_tax]
 	taxcast;
 	while (strcmp(tax.name, taxname))
 	{
 		N_tax++;
 		taxcast;
 	}
-#undef taxcast
+	#undef taxcast
 	ofstream fout("output.txt");
 	int SumExpFlat = 0,
 		SumExpOdn = 0,
