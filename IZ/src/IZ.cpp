@@ -23,19 +23,19 @@ int main()
 			flat.MonExp[j] = new int[taxes.n];
 		}
 	}
-	int **odpu = new int* [L],
-		**ExpFlats = new int* [L];
+	int** odpu = new int* [L],
+		** ExpFlats = new int* [L];
 	for (int i = 0; i < L; i++)
 	{
 		odpu[i] = new int[taxes.n];
 		ExpFlats[i] = new int[taxes.n];
 	}
-	int *Monpool = new int[L],
-		*tmps = new int[taxes.n],
+	int* Monpool = new int[L],
+		* tmps = new int[taxes.n],
 		MIN_MONTH = 999999;
 	for (int i = 0; i < L; i++)
 	{
-		char dat[MMoYYYY];
+		char dat[MMYYYY];
 		indet >> dat;
 		Monpool[i] = dtoi(dat);
 		for (int j = 0; j < taxes.n; j++)
@@ -52,7 +52,7 @@ int main()
 	indet.seekg(0);
 	indet >> L;
 	int date;
-	char dat[MMoYYYY];
+	char dat[MMYYYY];
 	for (int i = 0; i < L; i++)
 	{
 		indet >> dat;
@@ -83,23 +83,26 @@ int main()
 	ifstream fin("res\\input.txt");
 	int N_flat;
 	char taxname[6],
-		period_L[MMoYYYY],
-		period_R[MMoYYYY];
+		period_L[MMYYYY],
+		period_R[MMYYYY];
 	char c;
-	fin >> N_flat >> taxname >> period_L >> period_R;
+	fin >> N_flat >> taxname;
+	fin.getline(period_L, MMYYYY);
+	fin.get();
+	fin.getline(period_R, MMYYYY);
 	fin.close();
 	//обработка и вывод---------------------------------------
 	int per_L = dtoi(period_L) - MIN_MONTH,
 		per_R = dtoi(period_R) - MIN_MONTH,
 		N_tax = 0;
-	#define taxcast _tax& tax = static_cast<_tax*>(taxes.mas)[N_tax]
-	taxcast;
-	while (strcmp(tax.name, taxname))
+
+	_tax* tax_ptr = static_cast<_tax*>(taxes.mas);
+	while (strcmp(tax_ptr->name, taxname))
 	{
 		N_tax++;
-		taxcast;
+		tax_ptr++;
 	}
-	#undef taxcast
+
 	ofstream fout("output.txt");
 	int SumExpFlat = 0,
 		SumExpOdn = 0,

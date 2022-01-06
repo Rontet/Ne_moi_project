@@ -10,7 +10,7 @@ int dtoi(char d[])
 
 char* itod(int i)
 {
-	char tmp[MMoYYYY] = { '\0' };
+	char tmp[MMYYYY] = { '\0' };
 	_itoa_s(i, tmp, 10);
 	char* d = new char[] { tmp[4], tmp[5], '.', tmp[0], tmp[1], tmp[2], tmp[3], '\0'};
 	return d;
