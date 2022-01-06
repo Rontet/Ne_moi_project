@@ -9,7 +9,7 @@ int main()
 	//объявления, ввод, динамическая обработка---------------
 	_s flats = gethome();
 	_s taxes = gettaxes();
-	ifstream indet("details.txt");
+	ifstream indet("res\\details.txt");
 	int L;
 	indet >> L;
 	for (int i = 1; i < flats.n; i++)
@@ -75,7 +75,7 @@ int main()
 		}
 	}
 	indet.close();
-	ifstream fin("input.txt");
+	ifstream fin("res\\input.txt");
 	int N_flat;
 	char taxname[6],
 		period_L[MMoYYYY],

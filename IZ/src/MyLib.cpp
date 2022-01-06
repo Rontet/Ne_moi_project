@@ -4,7 +4,7 @@
 
 _s gettaxes()
 {
-	ifstream intax("taxes.txt");
+	ifstream intax("res\\taxes.txt");
 	int N_Taxes;
 	intax >> N_Taxes;
 	_tax* taxes = new _tax[N_Taxes];
@@ -18,7 +18,7 @@ _s gettaxes()
 
 _s gethome()
 {
-	ifstream inhome("home.txt");
+	ifstream inhome("res\\home.txt");
 	int N;
 	double S_home;
 	inhome >> N >> S_home;
