@@ -15,23 +15,23 @@ int main()
 	for (int i = 1; i < flats.n; i++)
 	{
 		_flat& flat = (static_cast<_flat*>(flats.mas))[i];
-		flat.ipu = new int*[L];
-		flat.MonExp = new int*[L];
+		flat.ipu = new int* [L];
+		flat.MonExp = new int* [L];
 		for (int j = 0; j < L; j++)
 		{
 			flat.ipu[j] = new int[taxes.n];
 			flat.MonExp[j] = new int[taxes.n];
 		}
 	}
-	int **odpu = new int*[L],
-		**ExpFlats = new int*[L];
+	int** odpu = new int* [L],
+		** ExpFlats = new int* [L];
 	for (int i = 0; i < L; i++)
 	{
 		odpu[i] = new int[taxes.n];
 		ExpFlats[i] = new int[taxes.n];
 	}
-	int *Monpool = new int[L],
-		*tmps = new int[taxes.n],
+	int* Monpool = new int[L],
+		* tmps = new int[taxes.n],
 		MIN_MONTH = 999999;
 	for (int i = 0; i < L; i++)
 	{
@@ -69,7 +69,7 @@ int main()
 			_flat& flat = (static_cast<_flat*>(flats.mas))[flatnum];
 			auto dszm = date - MIN_MONTH;
 			indet >> flat.ipu[dszm][j];
-			flat.MonExp[dszm][j] = (dszm == 0) ? 
+			flat.MonExp[dszm][j] = (dszm == 0) ?
 				0 : flat.ipu[dszm][j] - flat.ipu[dszm - 1][j];
 			ExpFlats[dszm][j] += flat.MonExp[dszm][j];
 		}
@@ -87,14 +87,14 @@ int main()
 	int per_L = dtoi(period_L) - MIN_MONTH,
 		per_R = dtoi(period_R) - MIN_MONTH,
 		N_tax = 0;
-	#define taxcast _tax& tax = static_cast<_tax*>(taxes.mas)[N_tax]
+#define taxcast _tax& tax = static_cast<_tax*>(taxes.mas)[N_tax]
 	taxcast;
 	while (strcmp(tax.name, taxname))
 	{
 		N_tax++;
 		taxcast;
 	}
-	#undef taxcast
+#undef taxcast
 	ofstream fout("output.txt");
 	int SumExpFlat = 0,
 		SumExpOdn = 0,
@@ -107,7 +107,7 @@ int main()
 			ExpOdn = (odpu[i][N_tax] - ExpFlats[i][N_tax]) * flat.s;
 		SumExpFlat += ExpFlat;
 		SumExpOdn += ExpOdn;
-		
+
 	}
 	int SumCostFlat = SumExpFlat * Cost,
 		SumCostOdn = SumExpOdn * Cost;
