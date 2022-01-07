@@ -12,7 +12,7 @@ struct _tax
 struct _flat
 {
 	int **ipu,
-		**MonExp;
+		*MonExp;
 	double s;
 	int ppl;
 };
